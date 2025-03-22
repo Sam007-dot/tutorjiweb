@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Story Generator</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        body {
+            background: #0d0d0d;
+            color: #fff;
+            text-align: center;
+        }
+        
+        header {
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 50px;
+            border-bottom: 2px solid rgba(0, 255, 255, 0.5);
+            z-index: 1000;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: cyan;
+        }
+        
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+        
+        nav ul li a {
+            text-decoration: none;
+            color: cyan;
+            font-size: 18px;
+            transition: 0.3s;
+        }
+        
+        nav ul li a:hover {
+            color: #00ffea;
+        }
+        
+        .hero {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            background: url('https://plus.unsplash.com/premium_photo-1678990345935-00db3b306bb5?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mzd8fGN5YmVycHVua3xlbnwwfHwwfHx8MA%3D%3D') no-repeat center center/cover;
+            position: relative;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 48px;
+            text-transform: uppercase;
+            color: cyan;
+            text-shadow: 0 0 10px cyan;
+        }
+        
+        .hero p {
+            font-size: 18px;
+            margin: 15px 0;
+            color: #ccc;
+        }
+        
+        .cta {
+            background: linear-gradient(45deg, #00ffee, #0099ff);
+            border: none;
+            padding: 15px 30px;
+            font-size: 20px;
+            color: #000;
+            font-weight: 700;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+            text-transform: uppercase;
+            text-shadow: 0 0 5px #fff;
+        }
+        
+        .cta:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px #00ffee;
+        }
+
+        /* Scrollable Story Section */
+        .story-section {
+            background: url('https://images.unsplash.com/photo-1615185990787-0c2561e830e8?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fG15c3Rlcnl8ZW58MHx8MHx8fDA%3D')no-repeat center center/cover;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 100px 50px;
+            flex-wrap: wrap;
+            overflow-y: auto;
+            max-height: 80vh;
+        }
+
+        .story-card {
+            width: 300px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+            text-align: center;
+        }
+
+        .story-card h2 {
+            color: cyan;
+        }
+
+        .story-card p {
+            color: #0c0b0b;
+        }
+
+        /* Pre-made Story Section */
+        .premade-stories {
+            background: url('https://plus.unsplash.com/premium_photo-1675355675304-cdc9ce104c9e?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mjl8fGhvcnJvcnxlbnwwfHwwfHx8MA%3D%3D')no-repeat center center/cover;
+            padding: 50px;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .premade-story {
+            width: 350px;
+            height: 250px;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: flex-end;
+            padding: 20px;
+            border-radius: 15px;
+            position: relative;
+            overflow: hidden;
+            text-shadow: 0 0 10px black;
+        }
+
+        .premade-story h3 {
+            font-size: 22px;
+            color: #fff;
+        }
+
+        .premade-story p {
+            font-size: 16px;
+            color: #ddd;
+        }
+
+        .story-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">StoryGen</div>
+        <nav>
+            <ul>
+                <li><a href="#">Create Story</a></li>
+                <li><a href="#">Discover Stories</a></li>
+                <li><a href="#">My Profile</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Craft Your Own Adventure</h1>
+            <p>Immerse yourself in an interactive storytelling experience like never before.</p>
+            <button class="cta">Start Your Story</button>
+        </div>
+    </section>
+
+    <section class="story-section">
+        <div class="story-card">
+            <h2>Trending Story 1</h2>
+            <p>Explore a world of cybernetic wonders and hidden secrets.</p>
+        </div>
+        <div class="story-card">
+            <h2>Trending Story 2</h2>
+            <p>Choose your path in this thrilling interactive mystery.</p>
+        </div>
+        <div class="story-card">
+            <h2>Trending Story 3</h2>
+            <p>Experience a futuristic adventure with endless possibilities.</p>
+        </div>
+        <div class="story-card">
+            <h2>Trending Story 4</h2>
+            <p>Unravel a deep sci-fi conspiracy in a neon-lit city.</p>
+        </div>
+        <div class="story-card">
+            <h2>Trending Story 5</h2>
+            <p>A cyber-hacker's journey through the digital underworld.</p>
+        </div>
+    </section>
+    <section class="premade-stories">
+        <div class="premade-story" style="background-image: url('https://plus.unsplash.com/premium_photo-1678937611339-0dedf2114e8b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8Y3liZXJuZXRpYyUyMGFuZCUyMHNlY3JldHxlbnwwfHwwfHx8MA%3D%3D');">
+            <div class="story-overlay"></div>
+            <div>
+                <h3>The Neon Conspiracy</h3>
+                <p>A cybernetic detective unravels the city's deepest secrets.</p>
+            </div>
+        </div>
+        <div class="premade-story" style="background-image: url('https://images.unsplash.com/photo-1519225924453-b28226426689?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fG15c3Rlcnl8ZW58MHx8MHx8fDA%3D');">
+            <div class="story-overlay"></div>
+            <div>
+                <h3>Galactic Odyssey</h3>
+                <p>Embark on an interstellar adventure beyond the stars.</p>
+            </div>
+        </div>
+        <div class="premade-story" style="background-image: url('https://images.unsplash.com/photo-1487932451588-8f8110a354e7?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGRhbmdlcnxlbnwwfHwwfHx8MA%3D%3D');">
+            <div class="story-overlay"></div>
+            <div>
+                <h3>The Shadow Code</h3>
+                <p>Decipher an ancient AI’s cryptic messages before it's too late.</p>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
